@@ -42,7 +42,8 @@ public class Vec3 {
     }
 
     public float dot(Vec3 v) {
-        return data[0] * v.data[0] + data[1] * v.data[1] + data[2] + v.data[2];
+        float n = data[0] * v.data[0] + data[1] * v.data[1] + data[2] * v.data[2];
+        return n;
     }
 
     public float length() {

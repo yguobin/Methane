@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,16 +8,87 @@
 
     <android.opengl.GLSurfaceView
         android:id="@+id/glSurfaceView"
-        android:layout_width="match_parent"
-        android:layout_height="500dp" />
-
-    <TextView
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Hello World!"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/glSurfaceView"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <RadioGroup
+        android:id="@+id/toggleGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/glSurfaceView"
+        android:background="#fff">
+        <ToggleButton
+            android:id="@+id/btn_Left"
+            android:tag="Left"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_left"
+            android:textOn=""
+            android:textOff=""
+            android:onClick="onButtonClick"/>
+        <ToggleButton
+            android:id="@+id/btn_Right"
+            android:tag="Right"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_right"
+            android:textOn=""
+            android:textOff=""
+            android:onClick="onButtonClick"/>
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_horizontal|center_vertical"-->
+            <!--android:text="Hello World!"/>-->
+        <ToggleButton
+            android:id="@+id/btn_Top"
+            android:tag="Top"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_top"
+            android:textOn=""
+            android:textOff=""
+            android:onClick="onButtonClick"/>
+        <ToggleButton
+            android:id="@+id/btn_Bottom"
+            android:tag="Bottom"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_bottom"
+            android:textOn=""
+            android:textOff=""
+            android:onClick="onButtonClick"/>
+        <ToggleButton
+            android:id="@+id/btn_Front"
+            android:tag="Front"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_front"
+            android:textOn=""
+            android:textOff=""
+            android:checked="true"
+            android:onClick="onButtonClick"/>
+        <ToggleButton
+            android:id="@+id/btn_Back"
+            android:tag="Back"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableTop="@drawable/ic_back"
+            android:textOn=""
+            android:textOff=""
+            android:onClick="onButtonClick"/>
+    </RadioGroup>
+</android.support.constraint.ConstraintLayout>

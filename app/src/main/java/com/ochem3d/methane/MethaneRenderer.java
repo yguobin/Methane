@@ -23,6 +23,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 class MethaneRenderer implements GLSurfaceView.Renderer {
+    private final static float CAMERA_MOVE_INC = 1.0f;
+
     private Context context;
     private int width;
     private int height;
@@ -158,17 +160,18 @@ class MethaneRenderer implements GLSurfaceView.Renderer {
         GLES30.glEnable(GLES30.GL_CULL_FACE);
 
         lightPos = new Vec3(1.2f, 1.0f, 2.0f);
-        camera = new Camera(new Vec3(-1.0f, 0.0f, 1.0f));
+        camera = new Camera(new Vec3(-1.0f, 0.0f, 1.0f), new Vec3(0.0f, 0.0f, -1.0f), new Vec3(0.0f, 1.0f, 0.0f));
+        camera.frontView();
 
         cylinderSize = new Vec3(0.03f, 0.03f, 0.75f);
         cylinderColor = new Vec3(15.0f / 255.0f, 18.0f / 255.0f, 57.0f / 255.0f);
         sphereCenterSize = new Vec3(0.25f);
         sphereOuterSize = new Vec3(0.15f);
-        sphereUpColor = new Vec3(255.0f / 255.0f, 255.0f / 255.0f, 50.0f / 255.0f);
+        sphereUpColor = new Vec3(255.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f);
         sphereCenterColor = new Vec3(73.0f / 255.0f);
-        sphereRightBottomColor = new Vec3(152.0f / 255.0f, 152.0f / 255.0f, 255.0f / 255.0f);
-        sphereLeftFrontBottomColor = new Vec3(153.0f / 255.0f, 253.0f / 255.0f, 52.0f / 255.0f);
-        sphereLeftBackBottomColor = new Vec3(255.0f / 255.0f, 150.0f / 255.0f, 67.0f / 255.0f);
+        sphereRightBottomColor = new Vec3(0.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f);
+        sphereLeftFrontBottomColor = new Vec3(0.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+        sphereLeftBackBottomColor = new Vec3(0.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
         // Build and compile our shader program
         shader = new Shader(this.context, "VertexShader.sl", "FragmentShader.sl");
@@ -183,6 +186,7 @@ class MethaneRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         this.height = height;
         this.width = width;
+        Log.i("MethaneRenderer", "width: " + this.width + " height: " + this.height);
     }
 
     @Override
@@ -193,7 +197,7 @@ class MethaneRenderer implements GLSurfaceView.Renderer {
                 lightPos.getZ());
 
         // Set the viewport
-        GLES30.glViewport(0, 0, width, height);
+        GLES30.glViewport(0, 32, width, height);
 
         // Clear the color buffer
         GLES30.glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -203,7 +207,7 @@ class MethaneRenderer implements GLSurfaceView.Renderer {
         shader.use();
 
         view = camera.getViewMatrix();
-        projection = Transform.perspective(new Mat4(), camera.getZoom(), (float) width / (float) height, 0.1f, 100.0f);
+        projection = Transform.perspective(new Mat4(), 45.0f, (float) width / (float) height, 0.1f, 100.0f);
         lightColor = new Vec3(1.0f, 1.0f, 1.0f);
         viewLocation = new Vec3(0.0f, 0.0f, -3.0f);
 
@@ -271,5 +275,36 @@ class MethaneRenderer implements GLSurfaceView.Renderer {
         model = Transform.scale(model, cylinderSize);
         drawCylinder(model);
 
+    }
+
+    public void moveCamera(String s) {
+        switch(s) {
+            case "Left":
+                this.camera.leftView();
+                break;
+            case "Right":
+                this.camera.rightView();
+                break;
+            case "Top":
+                this.camera.topView();
+                break;
+            case "Bottom":
+                this.camera.bottomView();
+                break;
+            case "Front":
+                this.camera.frontView();
+                break;
+            case "Back":
+                this.camera.backView();
+                break;
+        }
+    }
+
+    public void moveCamera(float dx, float dy) {
+        camera.moveCamera(dx, dy);
+    }
+
+    public void zoomCamera(float scaleFactor) {
+        camera.zoom(scaleFactor);
     }
 }
